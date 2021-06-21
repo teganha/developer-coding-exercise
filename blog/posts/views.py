@@ -1,3 +1,6 @@
+from django.http.response import JsonResponse
+from .models import Post
+
 # Feel free to move this to a new file if you are carrying out the 'tags' calculation there
 stopWords = [
     "#", "##", "a", "about", "above", "after", "again", "against", "all", "am",
@@ -21,9 +24,11 @@ stopWords = [
     "yourself", "yourselves"
 ]
 
-def post(request, slug):
-    pass
+def post(request, id):
+    queryset = Post.objects.all().values('id','content',).filter(id = id) 
+    query_list = list(queryset)
+    return JsonResponse(query_list, safe=False)
 
 
 def posts(request):
-    pass
+    return JsonResponse(list(Post.objects.all().values()), safe=False)
